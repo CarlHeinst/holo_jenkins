@@ -43,6 +43,7 @@ unclassified:
   hashicorpVault:
     configuration:
       engineVersion: 2
+      skipSslVerification: true
       timeout: 60
       vaultCredentialId: "vault_root"
       vaultUrl: "http://localhost:1234"
