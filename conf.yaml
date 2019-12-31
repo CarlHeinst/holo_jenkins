@@ -1,3 +1,12 @@
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - vaultTokenCredential:
+          description: "myroot"
+          id: "vault_root"
+          scope: GLOBAL
+          token: "{AQAAABAAAAAQP2JDYLAVZcMJuuaIjNWRF16Ao+h/LZ1JQ365M3TCUek=}"
 jenkins:
   nodes:
     - permanent:
@@ -30,3 +39,10 @@ jenkins:
             sshHostKeyVerificationStrategy:
               manuallyTrustedKeyVerificationStrategy:
                 requireInitialManualTrust: false
+unclassified:
+  hashicorpVault:
+    configuration:
+      engineVersion: 2
+      timeout: 60
+      vaultCredentialId: "vault_root"
+      vaultUrl: "http://localhost:1234"
