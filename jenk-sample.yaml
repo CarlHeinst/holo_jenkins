@@ -28,9 +28,18 @@ jenkins:
     - id: "default"
       url: "https://updates.jenkins.io/update-center.json"
   views:
-  - all:
-      name: "all"
-  viewsTabBar: "standard"
+    - buildMonitor:
+        jobNames:
+        - "OVT/OVT_Tests"
+        name: "OVT"
+        recurse: true
+        title: "OVT"
+    - all:
+        name: "all"
+    viewsTabBar: "standard"
+jobs:
+  - script: >
+      folder('OVT')
 security:
   apiToken:
     creationOfLegacyTokenEnabled: false
@@ -82,3 +91,41 @@ tool:
     installations:
     - home: "git"
       name: "Default"
+  # - script: >
+  #     pipelineJob('example') {
+  #     definition {
+  #         cps {
+  #             script('''
+  #             agent {label 'master'}
+  #             stages {
+  #                 stage('build') {
+  #                     steps {
+  #                         sh 'hostname'
+  #                         sh 'ls -la /'
+  #                     }
+  #                 }
+  #             }
+  #             ''')
+  #             sandbox()
+  #         }
+  #     }
+  #   }
+  # - script: >
+  #     pipelineJob('example 22') {
+  #     definition {
+  #         cps {
+  #             script('''
+  #             agent {label 'master'}
+  #             stages {
+  #                 stage('build') {
+  #                     steps {
+  #                         sh 'hostname'
+  #                         sh 'ls -la /'
+  #                     }
+  #                 }
+  #             }
+  #             ''')
+  #             sandbox()
+  #         }
+  #     }
+  #   }

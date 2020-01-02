@@ -11,6 +11,7 @@ github-api
 scm-api
 credentials-binding
 docker-workflow
+job-dsl
 matrix-auth
 credentials
 script-security

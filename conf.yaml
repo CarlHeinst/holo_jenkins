@@ -39,6 +39,36 @@ jenkins:
             sshHostKeyVerificationStrategy:
               manuallyTrustedKeyVerificationStrategy:
                 requireInitialManualTrust: false
+  views:
+    - buildMonitor:
+        jobNames:
+        - "OVT/OVT"
+        name: "OVT"
+        recurse: true
+        title: "OVT"
+    - all:
+        name: "all"
+jobs:
+  - script: >
+      folder('OVT')
+  - script: >
+      pipelineJob('OVT/OVT') {
+        definition {
+          cps {
+            script("""\
+              pipeline {
+                agent {label 'master'}
+                stages {
+                  stage ('test') {
+                    steps {
+                      echo "hello"
+                    }
+                  }
+                }
+              }""".stripIndent())
+          }
+        }
+      }
 unclassified:
   hashicorpVault:
     configuration:
