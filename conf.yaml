@@ -43,6 +43,8 @@ jenkins:
     - buildMonitor:
         jobNames:
         - "OVT/OVT"
+        - "OVT/OVT-JENKFILE/feature%2Fmake-it-fail"
+        - "OVT/OVT-JENKFILE/master"
         name: "OVT"
         recurse: true
         title: "OVT"
@@ -69,6 +71,20 @@ jobs:
           }
         }
       }
+  - script: >
+      multibranchPipelineJob('OVT/OVT-JENKFILE') {
+                branchSources {
+                    git {
+                        id = 'configuration-as-code'
+                        remote('https://github.com/tknerr/jenkins-pipes-helloworld.git')
+                    }
+                }
+                factory {
+                    workflowBranchProjectFactory {
+                        scriptPath('Jenkinsfile')
+                        }
+                }
+            }
 unclassified:
   hashicorpVault:
     configuration:
