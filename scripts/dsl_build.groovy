@@ -67,3 +67,45 @@ multibranchPipelineJob('OVT/OVT-CLONE5') {
             }
     }
 }
+
+multibranchPipelineJob('OVT/OVT-CLONE6') {
+    branchSources {
+        git {
+            id = 'admin'
+            remote('https://github.com/tknerr/jenkins-pipes-helloworld.git')
+        }
+    }
+    factory {
+        workflowBranchProjectFactory {
+            scriptPath('Jenkinsfile')
+            }
+    }
+}
+
+multibranchPipelineJob('OVT/OVT-CLONE7') {
+    branchSources {
+        git {
+            id = 'admin'
+            remote('https://github.com/tknerr/jenkins-pipes-helloworld.git')
+        }
+    }
+    factory {
+        workflowBranchProjectFactory {
+            scriptPath('Jenkinsfile')
+            }
+    }
+}
+
+multibranchPipelineJob('REDEPLOY') {
+    branchSources {
+        git {
+            id = 'admin'
+            remote('https://github.com/tknerr/jenkins-pipes-helloworld.git')
+        }
+    }
+    factory {
+        workflowBranchProjectFactory {
+            scriptPath('scripts/redploy.groovy')
+            }
+    }
+}
