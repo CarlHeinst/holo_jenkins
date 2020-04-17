@@ -54,7 +54,7 @@ job('loader/setup') {
       git{
         remote{
           url('https://github.com/CarlHeinst/holo_jenkins.git')
-          credentials('admin')
+          //credentials('admin')
         }
       }
     }
