@@ -30,7 +30,7 @@ multibranchPipelineJob('REDEPLOY') {
     branchSources {
         git {
             id = 'admin'
-            remote('https://github.com/tknerr/jenkins-pipes-helloworld.git')
+            remote('https://github.com/CarlHeinst/holo_jenkins.git')
         }
     }
     factory {
