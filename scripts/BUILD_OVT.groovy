@@ -1,3 +1,11 @@
+import groovy.time.TimeCategory
+  currentDate = new Date()
+  use( TimeCategory ){
+    delay = currentDate + 1.minutes
+    second_delay = currentDate + 4.minutes
+  }
+
+folder('loader')
 job('loader/setup') {
     scm {
       git{
@@ -23,6 +31,25 @@ job('loader/setup') {
       //configurationXML / 'builders' / 'javaposse.jobdsl.plugin.ExecuteDslScripts' / ignoreMissingFiles(true)
     }
   }
+
+pipelineJob('DISABLE') {
+        definition {
+          cps {
+            script("""\
+              pipeline {
+                agent {label 'master'}
+                stages {
+                  stage ('test') {
+                    steps {
+                      echo "hello"
+                    }
+                  }
+                }
+              }""".stripIndent())
+          }
+        }
+      }
+
 queue('DISABLE')
 queue('loader/setup')
 
