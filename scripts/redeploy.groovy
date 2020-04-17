@@ -4,7 +4,9 @@ pipeline {
         stage('Rerun') {
             steps {
                 script {
-                  build('loader/setup')
+                  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    build('loader/setup')
+                  }
                 }
             }
         }
