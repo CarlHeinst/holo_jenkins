@@ -98,3 +98,19 @@ The following example within the [conf.yaml](conf.yaml) sets up a multibranch pi
 The id field should point to a valid credential as specified elsewhere in [conf.yaml](conf.yaml).
 
 # Automatically configuring a pipeline job
+
+# Executing Groovy DSL Scripts to Configure Jobs
+
+The following example within the [conf.yaml](conf.yaml) demonstrates how you can execute a groovy script which contains Jenkins DSL elements to configure your instance.
+
+This execellent [resource](https://jenkinsci.github.io/job-dsl-plugin/) provides more detailed information about Jenkins DSL syntax.
+
+  ```yaml
+  jobs:
+  - file: /usr/local/BUILD_OVT.groovy
+  - script: queue('OVT/OVT-CLONE1')
+  - script: queue('OVT/OVT-CLONE2')
+  - script: queue('OVT/OVT-CLONE3')
+  ```
+
+Once the groovy script has defined the jobs using the script: queue() method orders Jenkins to execute them at launch.

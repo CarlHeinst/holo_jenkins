@@ -120,3 +120,8 @@ jobs:
                         }
                 }
             }
+  - script: queue("OVT/OVT-JENKFILE")
+  - file: "/usr/local/BUILD_OVT.groovy"
+  - script: queue('OVT/OVT-CLONE1')
+  - script: queue('OVT/OVT-CLONE2')
+  - script: queue('OVT/OVT-CLONE3')
