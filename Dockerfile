@@ -12,7 +12,7 @@ RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
 
 ## Copy your DSL script into the correct location
-COPY ./scripts/BUILD_OVT.groovy /usr/local/BUILD_OVT.groovy
+add ./scripts/BUILD_OVT.groovy /usr/local/BUILD_OVT.groovy
 ## Copy your CASC yaml file into the correct location
-COPY conf.yaml /usr/local/conf.yaml
+add conf.yaml /usr/local/conf.yaml
 ## This file can then be called for execution via conf.yaml
