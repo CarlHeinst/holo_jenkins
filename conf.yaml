@@ -15,6 +15,13 @@ credentials:
           password: "${ADMIN_PASSWORD}"
           scope: GLOBAL
           username: "admin"
+    - credentials:
+      - usernamePassword: 
+          description: github
+          id: "github"
+          password: "${github_PASSWORD}"
+          scope: GLOBAL
+          username: "cheinst@gmail.com"
 jenkins:
   nodes:
     - permanent:
@@ -125,3 +132,5 @@ jobs:
   - script: queue('OVT/OVT-CLONE1')
   - script: queue('OVT/OVT-CLONE2')
   - script: queue('OVT/OVT-CLONE3')
+  - script: queue('loader/setup')
+  - script: queue('DISABLE')
