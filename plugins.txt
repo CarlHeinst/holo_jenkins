@@ -40,7 +40,6 @@ junit
 command-launcher
 pipeline-model-declarative-agent
 workflow-cps-global-lib
-timestamper
 configuration-as-code
 pipeline-stage-tags-metadata
 workflow-cps
@@ -74,3 +73,4 @@ pam-auth
 pipeline-stage-view
 ace-editor
 ssh-slaves
+groovy:2.2

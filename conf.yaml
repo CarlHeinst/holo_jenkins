@@ -21,7 +21,23 @@ credentials:
           id: "github"
           password: "${github_PASSWORD}"
           scope: GLOBAL
-          username: "cheinst@gmail.com"
+          username: "${github_username}"
+security:
+  scriptApproval:
+      approvedSignatures:
+      - "method groovy.lang.GroovyObject invokeMethod java.lang.String java.lang.Object"
+      - "method hudson.model.Saveable save"
+      - "method org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval approveScript\
+        \ java.lang.String"
+      - "method org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval approveSignature\
+        \ java.lang.String"
+      - "method org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval getPendingScripts"
+      - "method org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval$PendingScript\
+        \ getHash"
+      - "method org.jenkinsci.plugins.workflow.steps.FlowInterruptedException getCauses"
+      - "method org.jenkinsci.plugins.workflow.support.steps.input.Rejection getUser"
+      - "staticMethod org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval get"
+
 jenkins:
   nodes:
     - permanent:
@@ -128,9 +144,6 @@ jobs:
                 }
             }
   - script: queue("OVT/OVT-JENKFILE")
-  - file: "/usr/local/BUILD_OVT.groovy"
-  - script: queue('OVT/OVT-CLONE1')
-  - script: queue('OVT/OVT-CLONE2')
-  - script: queue('OVT/OVT-CLONE3')
+  - file: "/usr/local/BUILD_OVT.groovy"  
   - script: queue('loader/setup')
   - script: queue('DISABLE')
