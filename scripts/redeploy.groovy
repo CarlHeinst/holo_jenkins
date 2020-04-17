@@ -3,10 +3,8 @@ pipeline {
     stages {
         stage('Rerun') {
             steps {
-                script {
-                  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    build('loader/setup')
-                  }
+                script {                  
+                  build job:'loader/setup', propagate:false
                 }
             }
         }
