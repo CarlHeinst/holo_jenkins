@@ -1,9 +1,7 @@
 workflow-multibranch
 trilead-api
-subversion
 cloudbees-folder
 git
-gradle
 git-client
 mapdb-api
 workflow-job
@@ -59,7 +57,6 @@ pipeline-graph-analysis
 workflow-basic-steps
 handlebars
 pipeline-model-definition
-hashicorp-vault-plugin
 workflow-api
 build-monitor-plugin
 workflow-step-api

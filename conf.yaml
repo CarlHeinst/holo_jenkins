@@ -2,11 +2,19 @@ credentials:
   system:
     domainCredentials:
     - credentials:
-      - vaultTokenCredential:
-          description: "myroot"
-          id: "vault_root"
+      - usernamePassword:
+          description: Account used if you wanted to bind henkins to AD
+          id: "bind_account"
+          password: "${BIND}"
           scope: GLOBAL
-          token: "{AQAAABAAAAAQP2JDYLAVZcMJuuaIjNWRF16Ao+h/LZ1JQ365M3TCUek=}"
+          username: "AD_BIND_ACCOUNT"
+    - credentials:
+      - usernamePassword: 
+          description: Admin Account
+          id: "admin"
+          password: "${ADMIN_PASSWORD}"
+          scope: GLOBAL
+          username: "admin"
 jenkins:
   nodes:
     - permanent:
@@ -50,6 +58,33 @@ jenkins:
         title: "OVT"
     - all:
         name: "all"
+# securityRealm:
+#   activeDirectory:
+#     bindPassword: "${BIND}"
+#     customDomain: true
+#     domains:
+#     - bindName: "CN=YOURACCOUNT.OU=YOUROU,DC=YOURDOMAIN,DC=com"
+#       bindPassword: "${BIND}"
+#       name: "YOURDOMAIN.COM"
+#       servers: "YOURDOMAINCONTROLLER.YOURDOMAIN.COM"
+#       site: "YOUR AD SITE"
+#       tlsConfiguration: TRUST_ALL_CERTIFICATES
+#     groupLookupStrategy: AUTO
+#     removeIrrelevantGroups: false
+#     startTks: true
+  securityRealm:
+      local:
+        allowsSignup: false
+        users:
+        - id: "admin"          
+          password: "${ADMIN_PASSWORD}"
+  authorizationStrategy:
+      globalMatrix:
+        grantedPermissions:
+          - "Overall/Read:anonymous"
+          - "Job/Read:anonymous"
+          - "View/Read:anonymous"
+          - "Overall/Administer:authenticated"
 jobs:
   - script: >
       folder('OVT')
@@ -75,7 +110,7 @@ jobs:
       multibranchPipelineJob('OVT/OVT-JENKFILE') {
                 branchSources {
                     git {
-                        id = 'configuration-as-code'
+                        id = 'admin'
                         remote('https://github.com/tknerr/jenkins-pipes-helloworld.git')
                     }
                 }
@@ -85,11 +120,3 @@ jobs:
                         }
                 }
             }
-unclassified:
-  hashicorpVault:
-    configuration:
-      engineVersion: 2
-      skipSslVerification: true
-      timeout: 60
-      vaultCredentialId: "vault_root"
-      vaultUrl: "http://localhost:1234"
