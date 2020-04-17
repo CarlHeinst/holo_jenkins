@@ -1,46 +1,53 @@
 folder('loader')
 
-// multibranchPipelineJob('OVT/OVT-CLONE1') {
-//     branchSources {
-//         git {
-//             id = 'admin'
-//             remote('https://github.com/tknerr/jenkins-pipes-helloworld.git')
-//         }
-//     }
-//     factory {
-//         workflowBranchProjectFactory {
-//             scriptPath('Jenkinsfile')
-//             }
-//     }
-// }
+multibranchPipelineJob('OVT/OVT-CLONE1') {
+    branchSources {
+        git {
+            id = 'admin'
+            remote('https://github.com/tknerr/jenkins-pipes-helloworld.git')
+        }
+    }
+    factory {
+        workflowBranchProjectFactory {
+            scriptPath('Jenkinsfile')
+            }
+    }
+}
 
-// multibranchPipelineJob('OVT/OVT-CLONE2') {
-//     branchSources {
-//         git {
-//             id = 'admin'
-//             remote('https://github.com/tknerr/jenkins-pipes-helloworld.git')
-//         }
-//     }
-//     factory {
-//         workflowBranchProjectFactory {
-//             scriptPath('Jenkinsfile')
-//             }
-//     }
-// }
+multibranchPipelineJob('OVT/OVT-CLONE2') {
+    branchSources {
+        git {
+            id = 'admin'
+            remote('https://github.com/tknerr/jenkins-pipes-helloworld.git')
+        }
+    }
+    factory {
+        workflowBranchProjectFactory {
+            scriptPath('Jenkinsfile')
+            }
+    }
+}
 
-// multibranchPipelineJob('OVT/OVT-CLONE3') {
-//     branchSources {
-//         git {
-//             id = 'admin'
-//             remote('https://github.com/tknerr/jenkins-pipes-helloworld.git')
-//         }
-//     }
-//     factory {
-//         workflowBranchProjectFactory {
-//             scriptPath('Jenkinsfile')
-//             }
-//     }
-// }
+multibranchPipelineJob('OVT/OVT-CLONE3') {
+    branchSources {
+        git {
+            id = 'admin'
+            remote('https://github.com/tknerr/jenkins-pipes-helloworld.git')
+        }
+    }
+    factory {
+        workflowBranchProjectFactory {
+            scriptPath('Jenkinsfile')
+            }
+    }
+}
+
+import groovy.time.TimeCategory
+  currentDate = new Date()
+  use( TimeCategory ){
+    delay = currentDate + 1.minutes
+    second_delay = currentDate + 4.minutes
+  }
 
 job('loader/setup') {
     scm {
@@ -57,7 +64,7 @@ job('loader/setup') {
     }
     steps {
       dsl {
-        external('scripts/BUILD_OVT.groovy')
+        external('scripts/dsl_build.groovy')
         removeAction('DELETE')
         ignoreExisting(false)
       }
@@ -67,3 +74,5 @@ job('loader/setup') {
       //configurationXML / 'builders' / 'javaposse.jobdsl.plugin.ExecuteDslScripts' / ignoreMissingFiles(true)
     }
   }  
+
+queue('loader/setup')
