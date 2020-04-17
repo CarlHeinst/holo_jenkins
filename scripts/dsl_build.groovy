@@ -35,7 +35,7 @@ multibranchPipelineJob('REDEPLOY') {
     }
     factory {
         workflowBranchProjectFactory {
-            scriptPath('scripts/redploy.groovy')
+            scriptPath('scripts/redeploy.groovy')
             }
     }
 }
