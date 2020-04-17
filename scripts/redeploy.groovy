@@ -14,7 +14,7 @@ pipeline {
                 }
             }
         }
-        stage('Rerun') {
+        stage('Final Run') {
             steps {
                 script {
                   build('loader/setup')
