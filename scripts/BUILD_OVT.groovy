@@ -52,8 +52,7 @@ job('loader/setup') {
         }
       }
     }
-    triggers {
-      //cron('*/1 * * *')
+    triggers {      
       cron('' + delay.getMinutes() + ',' + second_delay.getMinutes() + ' ' + delay.getHours() + ' ' + delay[Calendar.DAY_OF_MONTH] + ' ' + (delay.getMonth()+1) + ' *' )
     }
     steps {
@@ -85,14 +84,11 @@ def approval_script = """import org.jenkinsci.plugins.scriptsecurity.scripts.*
   toApprove = ScriptApproval.get().getPendingScripts().collect()
   toApprove.each {pending -> ScriptApproval.get().approveScript(pending.getHash())}
 """
-
 job('Approve') {
-    triggers {
-      //cron('*/1 * * *')
+    triggers {      
       cron('' + delay.getMinutes() + ',' + second_delay.getMinutes() + ' ' + delay.getHours() + ' ' + delay[Calendar.DAY_OF_MONTH] + ' ' + (delay.getMonth()+1) + ' *' )
     }
-    steps {
-        //systemGroovyScriptFile('/usr/local/approve.groovy')
+    steps {        
         systemGroovyCommand(approval_script)
     }
     configure{ configurationXML ->

@@ -222,4 +222,57 @@ In [conf.yaml](conf.yaml) we see this line:
 
 ## Having an Approval Job
 
-## Having a REDEPLOY Job that tries to redeploy, fails, approves and succeeds
+When loader above first tries to run it will fail as it is not authorised to execute the DSL commands it contains.
+
+Due to the way that Jenkins approves scripts for operation we can not simple provide a list of filenames as "good" scripts, instead we must approve them.
+
+The Approval job is split into two parts, the approval script itself and the job which runs it:
+
+```groovy
+def approval_script = """import org.jenkinsci.plugins.scriptsecurity.scripts.*
+  def scriptApproval = org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval.get()
+
+  String[] signs = [
+      "method org.jenkinsci.plugins.workflow.steps.FlowInterruptedException getCauses",
+      "method org.jenkinsci.plugins.workflow.support.steps.input.Rejection getUser"
+      ]
+
+  for( String sign : signs ) {
+      scriptApproval.approveSignature(sign)
+  }
+
+  scriptApproval.save()
+  toApprove = ScriptApproval.get().getPendingScripts().collect()
+  toApprove.each {pending -> ScriptApproval.get().approveScript(pending.getHash())}
+"""
+job('Approve') {
+    triggers {      
+      cron('' + delay.getMinutes() + ',' + second_delay.getMinutes() + ' ' + delay.getHours() + ' ' + delay[Calendar.DAY_OF_MONTH] + ' ' + (delay.getMonth()+1) + ' *' )
+    }
+    steps {        
+        systemGroovyCommand(approval_script)
+    }
+    configure{ configurationXML ->
+      configurationXML / 'builders' / 'hudson.plugins.groovy.SystemGroovy' / 'source' / 'script' / sandbox(true)
+    }    
+}
+```
+
+> Preauthorising the powerful methods utilised by the approval script is potentially dangerous. However the intention is that this instance will be entirely managed from source control, with no one permitted to be an administrator of it.
+
+> Should the instance fail it would be rebuilt.
+
+An interesting example can be seen where the job DSL is making use of the configurationXML method. This can be coupled with the config.xml of a Jenkins job to understand how to configure additional settings beyond those directly available in Jenkins DSL.
+
+You will also note the use again of custom CRON timers to ensure that the approval job runs automatically shortly after the instance launches.
+
+## REDEPLOY Job
+
+Now we assemble our elements into the redploy job. Redeploy is to be used for when your instance had been deployed but some configuration changes are made to our dsl_build.groovy file within our source control systems.
+
+You would then run the redeploy job, triggering the following events:
+
+- `loader/setup` job runs, it's hash value is compared against what Jenkins has on record and has changed - Jenkins refuses to allow the job to run.
+  - The redeploy job has been configured to ignore this failure and continue with it's next step.
+- `Approve` is trigggered, updating the hash value for `loader/setup`
+- `loader/setup` is run a second time and as it has now been authorised, it executes and updates the configuration of your instance accordingly.
