@@ -13,7 +13,8 @@
   - [Creating an Approval Pipeline Job in a High Integrity Jenkins as Code Environment](#creating-an-approval-pipeline-job-in-a-high-integrity-jenkins-as-code-environment)
 - [Jenkins DSL Job to configure the Entire Instance](#jenkins-dsl-job-to-configure-the-entire-instance)
   - [Having an Approval Job](#having-an-approval-job)
-  - [Having a REDEPLOY Job that tries to redeploy, fails, approves and succeeds](#having-a-redeploy-job-that-tries-to-redeploy-fails-approves-and-succeeds)
+  - [REDEPLOY Job](#redeploy-job)
+- [Appendix i - Even more DSL](#appendix-i---even-more-dsl)
 
 To test clone down the repo, then execute:
 
@@ -276,3 +277,48 @@ You would then run the redeploy job, triggering the following events:
   - The redeploy job has been configured to ignore this failure and continue with it's next step.
 - `Approve` is trigggered, updating the hash value for `loader/setup`
 - `loader/setup` is run a second time and as it has now been authorised, it executes and updates the configuration of your instance accordingly.
+
+# Appendix i - Even more DSL
+
+Jenkins DSL scripts allow us to dictate the configuration of our Jenkins jobs. Life is far too short for clicking through a GUI to deploy a new job, especially when 90% of the configuration within that job is the same as dozens of others you've already created:
+
+```groovy
+multibranchPipelineJob('Name of New Job') {
+    branchSources {
+        git {
+            id = 'admin'
+            remote('https://github.com/PlaceYourRpoLives.git')
+        }
+    }
+    factory {
+        workflowBranchProjectFactory {
+            scriptPath('path_to_jenkinsfile')
+            }
+    }
+}
+```
+
+By filling a groovy script with entries like the one above think how much more quickly you can deploy new jobs to Jenkins, knowing that they will be consistent with one another. 
+
+You could even template this configuration using a function for even more minimal code:
+
+```groovy
+def create_pipeline_from_template(jobname, jenkinspath, repo_url, job_credential) {
+  multibranchPipelineJob(jobname) {
+    branchSources {
+        git {
+            id = job_credential
+            remote(repo_url)
+        }
+    }
+    factory {
+        workflowBranchProjectFactory {
+            scriptPath(jenkinspath)
+            }
+    }
+  }
+}
+create_pipeline_from_template('OVT/OVT-CLONE7', 'Jenkinsfile', 'https://github.com/tknerr/jenkins-pipes-helloworld.git', 'admin')
+create_pipeline_from_template('OVT/OVT-CLONE8', 'Jenkinsfile', 'https://github.com/tknerr/jenkins-pipes-helloworld.git', 'admin')
+create_pipeline_from_template('OVT/OVT-CLONE9'by alm, 'Jenkinsfile', 'https://github.com/tknerr/jenkins-pipes-helloworld.git', 'admin')
+```
