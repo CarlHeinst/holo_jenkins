@@ -1,5 +1,20 @@
 # Holo Jenkins
 
+- [Holo Jenkins](#holo-jenkins)
+- [Creating Local Jenkins User Accounts](#creating-local-jenkins-user-accounts)
+- [Binding your jenkins instance to an active directory](#binding-your-jenkins-instance-to-an-active-directory)
+- [Automatically Installing Plugins based on plugins.txt](#automatically-installing-plugins-based-on-pluginstxt)
+- [Automatically Configuring a Multibranch pipeline job](#automatically-configuring-a-multibranch-pipeline-job)
+- [Automatically configuring a pipeline job](#automatically-configuring-a-pipeline-job)
+- [Executing Groovy DSL Scripts to Configure Jobs](#executing-groovy-dsl-scripts-to-configure-jobs)
+- [A Discussion on Script Approvals](#a-discussion-on-script-approvals)
+  - [Disabled Script Approval - Simple but Unsafe](#disabled-script-approval---simple-but-unsafe)
+  - [Creating an Approval Pipeline Job - Better but Still Dangerous.](#creating-an-approval-pipeline-job---better-but-still-dangerous)
+  - [Creating an Approval Pipeline Job in a High Integrity Jenkins as Code Environment](#creating-an-approval-pipeline-job-in-a-high-integrity-jenkins-as-code-environment)
+- [Jenkins DSL Job to configure the Entire Instance](#jenkins-dsl-job-to-configure-the-entire-instance)
+  - [Having an Approval Job](#having-an-approval-job)
+  - [Having a REDEPLOY Job that tries to redeploy, fails, approves and succeeds](#having-a-redeploy-job-that-tries-to-redeploy-fails-approves-and-succeeds)
+
 To test clone down the repo, then execute:
 
 ```bash

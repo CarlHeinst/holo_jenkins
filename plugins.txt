@@ -74,3 +74,5 @@ pipeline-stage-view
 ace-editor
 ssh-slaves
 groovy:2.2
+splunk-devops:1.9.2
+logstash
